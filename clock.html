@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock - GuyKa</title>
+</head>
+<body>
+
+	<div class="center">
+		<h1 id="today"></h1>
+		<div class="clock">
+			<div class="clock-face">
+				<div class="hand hour-hand"></div>
+				<div class="hand min-hand"></div>
+				<div class="hand second-hand"></div>
+			</div>
+		</div>
+    </div>
+
+
+  <style>
+    html {
+      background:#018DED url(http://unsplash.it/1500/1000?image=881&blur=50); 
+      background-size:cover;
+      font-family:'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display:flex;
+      flex:1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .center {
+	  margin:50px auto;
+      position: relative;
+	}
+	
+	h1 {
+		color: DarkGoldenRod;
+	}
+	
+	.clock {
+      border:20px solid white;
+      border-radius:50%;
+      width: 30rem;
+      height: 30rem;      
+      padding:2rem;
+      box-shadow:
+        0 0 0 4px rgba(0,0,0,0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+	  transform: rotate(90deg);    /* !The instructor rotated .hand instead, according to inspector, it makes the previous transform redundant */
+    }
+
+    .hand {
+      width:50%;
+      height:6px;
+      background:black;
+      position: absolute;
+      top:50%;
+	  transform-origin: 100%;
+	  transition: all 0.5s;
+    }
+	
+	.hour-hand {
+		background: red;
+		width: 25%;   	/* Make it short */
+		left: 25%;		/* Center it on clock-face */
+	}
+	
+	.min-hand {
+		background: #CC33FF;
+		width: 33%;   	/* Make it short */
+		left: 17%;		/* Center it on clock-face */
+	}
+
+
+  </style>
+
+  <script>
+		
+	function updateClock() {
+		var d = new Date();
+	//	var sec = d.getSeconds();       /* Use the global offset instead */
+		sec += 1;
+		var min = d.getMinutes();
+		var hours = d.getHours();
+		
+		
+		// !Instructor has used querySelector('.hour-hand') instead getElementsByClassName()[0]
+		document.getElementsByClassName('hour-hand')[0].style.transform = `rotate(${hours*30+min/2}deg)`;   
+		document.getElementsByClassName('min-hand')[0].style.transform = `rotate(${min*6+sec/10}deg)`;
+		document.getElementsByClassName('second-hand')[0].style.transform = `rotate(${sec*6}deg)`;
+	}
+	
+	function updateDate() {
+		var d = new Date();
+		var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+		var txt = `Today is ${days[d.getDay()]} ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+		
+		today.innerHTML = txt;
+	}	
+			
+	var sec = new Date().getSeconds();   /* Set the seconds as global variable which will be updated each time the clock is updated (=every second) */
+	setInterval(updateClock, 1000);		 /* Update the clock every second */
+	updateDate();
+	
+	window.onfocus = function() { sec = new Date().getSeconds(); updateDate(); }; 	/* Make sure there are no lags */
+	
+  </script>
+</body>
+</html>
