@@ -115,7 +115,8 @@
 		today.innerHTML = txt;
 	}	
 			
-	var sec = new Date().getSeconds();   /* Set the seconds as global variable which will be updated each time the clock is updated (=every second) */
+	var sec = new Date().getSeconds();   	/* Set the seconds as global variable which will be updated each time the clock is updated (=every second) */
+	updateClock();
 	setInterval(updateClock, 1000);		 /* Update the clock every second */
 	updateDate();
 	
